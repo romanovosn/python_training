@@ -1,10 +1,5 @@
 # -*- coding: utf-8 -*-
 from selenium import webdriver
-from selenium.webdriver.common.by import By
-from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.support.ui import Select
-from selenium.common.exceptions import NoSuchElementException
-from selenium.common.exceptions import NoAlertPresentException
 import unittest
 import time
 
@@ -12,19 +7,22 @@ class T1(unittest.TestCase):
     def setUp(self):
         self.driver = webdriver.Firefox(executable_path=r'C:\\Users\\roman\\PycharmProjects\\python_training\\env\\drivers\\firefoxdriver\\geckodriver.exe')
         self.driver.implicitly_wait(30)
-        self.base_url = "https://www.google.com/"
         self.verificationErrors = []
-        self.accept_next_alert = True
-    
+
     def test_t1(self):
         driver = self.driver
-        driver.get("http://localhost/addressbook/")
-        driver.find_element_by_name("user").clear()
-        driver.find_element_by_name("user").send_keys("admin")
-        driver.find_element_by_name("pass").clear()
-        driver.find_element_by_name("pass").send_keys("secret")
-        driver.find_element_by_xpath("//input[@value='Login']").click()
-        driver.find_element_by_link_text("groups").click()
+        self.open_home_page(driver)
+        self.login(driver)
+        self.open_groups_page(driver)
+        self.create_group(driver)
+        self.logout(driver)
+        time.sleep(5)
+
+    def logout(self, driver):
+        driver.find_element_by_link_text("Logout").click()
+
+    def create_group(self, driver):
+        # создание группы
         driver.find_element_by_name("new").click()
         driver.find_element_by_name("group_name").click()
         driver.find_element_by_name("group_name").clear()
@@ -35,32 +33,26 @@ class T1(unittest.TestCase):
         driver.find_element_by_name("group_footer").click()
         driver.find_element_by_name("group_footer").clear()
         driver.find_element_by_name("group_footer").send_keys("sdffd")
+        # сохранение группы
         driver.find_element_by_name("submit").click()
         driver.find_element_by_link_text("group page").click()
-        driver.find_element_by_link_text("Logout").click()
-        time.sleep(10)
-    
-    def is_element_present(self, how, what):
-        try: self.driver.find_element(by=how, value=what)
-        except NoSuchElementException as e: return False
-        return True
-    
-    def is_alert_present(self):
-        try: self.driver.switch_to_alert()
-        except NoAlertPresentException as e: return False
-        return True
-    
-    def close_alert_and_get_its_text(self):
-        try:
-            alert = self.driver.switch_to_alert()
-            alert_text = alert.text
-            if self.accept_next_alert:
-                alert.accept()
-            else:
-                alert.dismiss()
-            return alert_text
-        finally: self.accept_next_alert = True
-    
+
+    def open_groups_page(self, driver):
+        # открытие группы
+        driver.find_element_by_link_text("groups").click()
+
+    def login(self, driver):
+        # логин
+        driver.find_element_by_name("user").clear()
+        driver.find_element_by_name("user").send_keys("admin")
+        driver.find_element_by_name("pass").clear()
+        driver.find_element_by_name("pass").send_keys("secret")
+        driver.find_element_by_xpath("//input[@value='Login']").click()
+
+    def open_home_page(self, driver):
+        # открытие страницы
+        driver.get("http://localhost/addressbook/")
+        
     def tearDown(self):
         self.driver.quit()
         self.assertEqual([], self.verificationErrors)
