@@ -11,27 +11,24 @@ class T1(unittest.TestCase):
         self.verificationErrors = []
 
     def test_t2(self):
-        driver = self.driver
-        self.open_home_page(driver)
-        self.login(driver, "admin", "secret")
-        self.open_groups_page(driver)
-        self.create_group(driver, Group(name="123", header="1234", footer="12345"))
-        self.logout(driver)
+        self.login("admin", "secret")
+        self.create_group(Group(name="123", header="1234", footer="12345"))
+        self.logout()
 
     def test_t1(self):
-        driver = self.driver
-        self.open_home_page(driver)
-        self.login(driver, "admin", "secret")
-        self.open_groups_page(driver)
-        self.create_group(driver, Group(name="sdf", header="sdf", footer="sdffd"))
-        self.logout(driver)
+        self.login("admin", "secret")
+        self.create_group(Group(name="sdf", header="sdf", footer="sdffd"))
+        self.logout()
         time.sleep(3)
 
-    def logout(self, driver):
+    def logout(self):
+        driver = self.driver
         driver.find_element_by_link_text("Logout").click()
 
-    def create_group(self, driver, group):
+    def create_group(self, group):
         # создание группы
+        driver = self.driver
+        self.open_groups_page()
         driver.find_element_by_name("new").click()
         driver.find_element_by_name("group_name").click()
         driver.find_element_by_name("group_name").clear()
@@ -46,20 +43,24 @@ class T1(unittest.TestCase):
         driver.find_element_by_name("submit").click()
         driver.find_element_by_link_text("group page").click()
 
-    def open_groups_page(self, driver):
+    def open_groups_page(self):
         # открытие группы
+        driver = self.driver
         driver.find_element_by_link_text("groups").click()
 
-    def login(self, driver, username, password):
+    def login(self, username, password):
         # логин
+        driver = self.driver
+        self.open_home_page()
         driver.find_element_by_name("user").clear()
         driver.find_element_by_name("user").send_keys(username)
         driver.find_element_by_name("pass").clear()
         driver.find_element_by_name("pass").send_keys(password)
         driver.find_element_by_xpath("//input[@value='Login']").click()
 
-    def open_home_page(self, driver):
+    def open_home_page(self):
         # открытие страницы
+        driver = self.driver
         driver.get("http://localhost/addressbook/")
 
     def tearDown(self):
