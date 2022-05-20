@@ -1,11 +1,25 @@
+# -*- coding: utf-8 -*-
 from selenium import webdriver
+import unittest
+from group import Group
+import time
 
-class Application:
-
-    def __init__(self):
+class T1(unittest.TestCase):
+    def setUp(self):
         self.driver = webdriver.Firefox(executable_path=r'C:\\Users\\roman\\PycharmProjects\\python_training\\env\\drivers\\firefoxdriver\\geckodriver.exe')
         self.driver.implicitly_wait(30)
+        self.verificationErrors = []
 
+    def test_t2(self):
+        self.login("admin", "secret")
+        self.create_group(Group(name="123", header="1234", footer="12345"))
+        self.logout()
+
+    def test_t1(self):
+        self.login("admin", "secret")
+        self.create_group(Group(name="sdf", header="sdf", footer="sdffd"))
+        self.logout()
+        time.sleep(3)
 
     def logout(self):
         driver = self.driver
@@ -49,5 +63,9 @@ class Application:
         driver = self.driver
         driver.get("http://localhost/addressbook/")
 
-    def destroy(self):
+    def tearDown(self):
         self.driver.quit()
+        self.assertEqual([], self.verificationErrors)
+
+if __name__ == "__main__":
+    unittest.main()
