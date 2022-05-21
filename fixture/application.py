@@ -1,14 +1,12 @@
 from selenium import webdriver
+from fixture.session import SessionHelper
 
 class Application:
 
     def __init__(self):
         self.driver = webdriver.Firefox(executable_path=r'C:\\Users\\roman\\PycharmProjects\\python_training\\env\\drivers\\firefoxdriver\\geckodriver.exe')
         self.driver.implicitly_wait(30)
-
-    def logout(self):
-        driver = self.driver
-        driver.find_element_by_link_text("Logout").click()
+        self.session = SessionHelper(self)
 
     def create_group(self, group):
         # создание группы
@@ -32,16 +30,6 @@ class Application:
         # открытие группы
         driver = self.driver
         driver.find_element_by_link_text("groups").click()
-
-    def login(self, username, password):
-        # логин
-        driver = self.driver
-        self.open_home_page()
-        driver.find_element_by_name("user").clear()
-        driver.find_element_by_name("user").send_keys(username)
-        driver.find_element_by_name("pass").clear()
-        driver.find_element_by_name("pass").send_keys(password)
-        driver.find_element_by_xpath("//input[@value='Login']").click()
 
     def open_home_page(self):
         # открытие страницы
