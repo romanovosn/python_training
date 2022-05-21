@@ -6,7 +6,6 @@ class Application:
         self.driver = webdriver.Firefox(executable_path=r'C:\\Users\\roman\\PycharmProjects\\python_training\\env\\drivers\\firefoxdriver\\geckodriver.exe')
         self.driver.implicitly_wait(30)
 
-
     def logout(self):
         driver = self.driver
         driver.find_element_by_link_text("Logout").click()
