@@ -12,13 +12,13 @@ def app(request):
 
 
 def test_t2(app):
-    app.session.login("admin", "secret")
+    app.login("admin", "secret")
     app.create_group(Group(name="123", header="1234", footer="12345"))
-    app.session.logout()
+    app.logout()
 
 def test_t1(app):
-    app.session.login("admin", "secret")
+    app.login("admin", "secret")
     app.create_group(Group(name="sdf", header="sdf", footer="sdffd"))
-    app.session.logout()
+    app.logout()
     time.sleep(3)
 
