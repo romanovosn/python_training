@@ -5,7 +5,7 @@ from fixture.group import GroupHelper
 class Application:
 
     def __init__(self):
-        self.driver = webdriver.Firefox(executable_path=r'C:\\Users\\roman\\PycharmProjects\\python_training\\env\\drivers\\firefoxdriver\\geckodriver.exe')
+        self.driver = webdriver.Firefox(executable_path=r'C:\Users\roman\PycharmProjects\python_training\env\drivers\firefoxdriver\geckodriver.exe')
         self.driver.implicitly_wait(30)
         self.session = SessionHelper(self)
         self.group = GroupHelper(self)
